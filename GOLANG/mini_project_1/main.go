@@ -13,8 +13,18 @@ type buku struct {
 	status string
 }
 
+func printBooks(books []buku) {
+	for _, book := range books {
+		fmt.Println(" ")
+		fmt.Println("no:", book.id)
+		fmt.Println("Nama:", book.nama)
+		fmt.Println("Deskripsi:", book.desc)
+		fmt.Println("Status", book.status)
+	}
+}
+
 func main() {
-	id := 0
+	id := 1
 	var books []buku
 	var first string
 	s := bufio.NewScanner(os.Stdin)
@@ -41,19 +51,25 @@ func main() {
 			})
 			id++
 		case "b":
-			for _, book := range books {
-				fmt.Println(book.id)
-				fmt.Println("Nama:", book.nama)
-				fmt.Println("Deskripsi:", book.desc)
-				fmt.Println("Status", book.status)
-				fmt.Println(" ")
-			}
+			printBooks(books)
 		case "c":
+			printBooks(books)
+			fmt.Println("Masukkan nomor buku yang ingin dihapus...")
 			s.Scan()
-			deleteid := s.String()
+			deleteid := s.Text()
 			for i, book := range books {
-				if book.id == deleteid {
-					books = append(books[:i])
+				if fmt.Sprint(book.id) == deleteid {
+					books = append(books[:i], books[:i+1]...)
+				}
+			}
+		case "d":
+			printBooks(books)
+			fmt.Println("Masukkan nomor buku yang ingin diedit...")
+			s.Scan()
+			editid := s.Text()
+			for i, book := range books {
+				if fmt.Sprint(book.id) == editid {
+					books = append(books[:i], books[:i]...)
 				}
 			}
 		}
